@@ -19,56 +19,17 @@ function createGradientUpdater(elements) {
     }
 }
 
-function createBlackoutToggle(elements) {
-    var body = elements.body;
-    var css = elements.css;
-    var button = elements.button;
-    var setGradient = elements.setGradient;
-    var isActive = false;
+var css = null;
+var color1 = null;
+var color2 = null;
+var body = null;
 
-    function updateButton() {
-        if (!button) {
-            return;
-        }
-        button.textContent = isActive ? "Retour gradient" : "Mode noir";
-    }
-
-    function applyBlackout() {
-        body.classList.add("blackout");
-        body.style.background = "#000";
-        css.textContent = "background: #000;";
-    }
-
-    function clearBlackout() {
-        body.classList.remove("blackout");
-        setGradient();
-    }
-
-    function toggleBlackout() {
-        isActive = !isActive;
-        if (isActive) {
-            applyBlackout();
-        } else {
-            clearBlackout();
-        }
-        updateButton();
-    }
-
-    updateButton();
-
-    return {
-        toggle: toggleBlackout,
-        isActive: function () {
-            return isActive;
-        }
-    };
+if (typeof document !== "undefined") {
+    css = document.querySelector("h3");
+    color1 = document.querySelector(".color1");
+    color2 = document.querySelector(".color2");
+    body = document.getElementById("gradient");
 }
-
-var css = document.querySelector("h3");
-var color1 = document.querySelector(".color1");
-var color2 = document.querySelector(".color2");
-var body = document.getElementById("gradient");
-var blackoutButton = document.getElementById("blackout-toggle");
 
 if (css && color1 && color2 && body) {
     var setGradient = createGradientUpdater({
@@ -78,30 +39,11 @@ if (css && color1 && color2 && body) {
         color2: color2
     });
 
-    var blackoutToggle = createBlackoutToggle({
-        body: body,
-        css: css,
-        button: blackoutButton,
-        setGradient: setGradient
-    });
-
-    function handleGradientInput() {
-        if (!blackoutToggle.isActive()) {
-            setGradient();
-        }
-    }
-
-    color1.addEventListener("input", handleGradientInput);
-    color2.addEventListener("input", handleGradientInput);
-
-    if (blackoutButton) {
-        blackoutButton.addEventListener("click", blackoutToggle.toggle);
-    }
-
+    color1.addEventListener("input", setGradient);
+    color2.addEventListener("input", setGradient);
     setGradient();
 }
 
 module.exports = {
-    createGradientUpdater: createGradientUpdater,
-    createBlackoutToggle: createBlackoutToggle
+    createGradientUpdater: createGradientUpdater
 };
