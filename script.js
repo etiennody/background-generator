@@ -19,10 +19,17 @@ function createGradientUpdater(elements) {
     }
 }
 
-var css = document.querySelector("h3");
-var color1 = document.querySelector(".color1");
-var color2 = document.querySelector(".color2");
-var body = document.getElementById("gradient");
+var css = null;
+var color1 = null;
+var color2 = null;
+var body = null;
+
+if (typeof document !== "undefined") {
+    css = document.querySelector("h3");
+    color1 = document.querySelector(".color1");
+    color2 = document.querySelector(".color2");
+    body = document.getElementById("gradient");
+}
 
 if (css && color1 && color2 && body) {
     var setGradient = createGradientUpdater({
